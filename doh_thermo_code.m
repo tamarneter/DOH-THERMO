@@ -284,38 +284,104 @@ legend('Calculated results','Linear fit');
 hold off;
 
 %מדידות דינמיות
-dynamic_m_type5_AVG = [mean(MEDIDOTDINAMIOT1{:,{'5'}});mean(MEDIDOTDINAMIOT2{:,{'5'}});mean(MEDIDOTDINAMIOT3{:,{'5'}})];
-dynamic_m_type6_AVG = [mean(MEDIDOTDINAMIOT1{:,{'6'}});mean(MEDIDOTDINAMIOT2{:,{'6'}});mean(MEDIDOTDINAMIOT3{:,{'6'}})];
-dynamic_m_type7_AVG = [mean(MEDIDOTDINAMIOT1{:,{'7'}});mean(MEDIDOTDINAMIOT2{:,{'7'}});mean(MEDIDOTDINAMIOT3{:,{'7'}})];
+% dynamic_m_type5_AVG = [mean(MEDIDOTDINAMIOT1{:,{'5'}});mean(MEDIDOTDINAMIOT2{:,{'5'}});mean(MEDIDOTDINAMIOT3{:,{'5'}})];
+% dynamic_m_type6_AVG = [mean(MEDIDOTDINAMIOT1{:,{'6'}});mean(MEDIDOTDINAMIOT2{:,{'6'}});mean(MEDIDOTDINAMIOT3{:,{'6'}})];
+% dynamic_m_type7_AVG = [mean(MEDIDOTDINAMIOT1{:,{'7'}});mean(MEDIDOTDINAMIOT2{:,{'7'}});mean(MEDIDOTDINAMIOT3{:,{'7'}})];
 time = [0.01:0.01:30];
 
-temp_dynamic1_m5 = (2.084*10^4).*MEDIDOTDINAMIOT1{:,{'5'}}+7.195;
-temp_dynamic1_m6 = (2.125*10^4).*MEDIDOTDINAMIOT1{:,{'5'}}+6.175;
-temp_dynamic1_m7 = (2.123*10^4).*MEDIDOTDINAMIOT1{:,{'5'}}+5.765;
+temp_dynamic1_m5 = (2.084*10^4).*MEDIDOTDINAMIOT3{:,{'5'}}+7.195;
+temp_dynamic1_m6 = (2.125*10^4).*MEDIDOTDINAMIOT3{:,{'5'}}+6.175;
+temp_dynamic1_m7 = (2.123*10^4).*MEDIDOTDINAMIOT3{:,{'5'}}+5.765;
 
 figure(17)
 hold on;
 grid on;
-title('');
+title('Tempratures measured by Type T(5),T(6),T(7) to Time');
 xlabel('Time [s]');
-ylabel('');
+ylabel('Measured Temprature [C]');
+% xlim([0,15]);
 plot(time,temp_dynamic1_m5');
 plot(time,temp_dynamic1_m6');
 plot(time,temp_dynamic1_m7');
 legend('small node','medium node','large node');
 hold off;
 
-temp_dynamic_m1 = (2.195*10^4).*ethanol_type_1_AVG +27.24;
-temp_dynamic_m2 = (2.131*10^4).*ethanol_type_2_AVG + 6.112;
-temp_dynamic_m4 = (1.681*10^4).*ethanol_type_4_AVG + 6.105;
-temp_dynamic_m8 =(2.184*10^4).*ethanol_type_8_AVG + 7.062;
-temp_dynamic_mRTD = (4.211).*ethanol_RTD_AVG -433.4;
+temp_dynamic_m1 = (2.195*10^4).*MEDIDOTDINAMIOT3{:,{'1'}} +27.24;
+temp_dynamic_m2 = (2.131*10^4).*MEDIDOTDINAMIOT3{:,{'2'}} + 6.112;
+temp_dynamic_m4 = (1.681*10^4).*MEDIDOTDINAMIOT3{:,{'4'}} + 6.105;
+temp_dynamic_m8 =(2.184*10^4).*MEDIDOTDINAMIOT3{:,{'8'}} + 7.062;
+temp_dynamic_mRTD = (4.211).*MEDIDOTDINAMIOT3{:,{'9'}} -433.4;
 
-T0_TYPE1 = 
-T0_TYPE2 = 
-T0_TYPE4 = 
-T0_TYPE5 = 
-T0_TYPE6 = 
-T0_TYPE7 = 
-T0_TYPE8 =
-TO_RTD = 
+figure(18)
+hold on;
+grid on;
+title('Tempratures measured by RTD to Time');
+xlabel('Time [s]');
+ylabel('Measured Temprature [C]');
+plot(time,temp_dynamic_mRTD');
+hold off;
+
+% T0_TYPE1 = temp_dynamic_m1(1);
+% T0_TYPE2 = temp_dynamic_m2(1);
+% T0_TYPE4 = temp_dynamic_m4(1);
+T0_TYPE5 = temp_dynamic1_m5(1);
+T0_TYPE6 = temp_dynamic1_m6(1);
+T0_TYPE7 = temp_dynamic1_m7(1);
+% T0_TYPE8 = temp_dynamic_m8(1);
+T0_RTD = temp_dynamic_mRTD(1);
+
+T_inf_5 = 71; %C
+T_inf_6 = 71; %C
+T_inf_7 = 71; %C
+T_inf_RTD = 66; %C
+
+dynamic_mes_lnfunc5 = log((temp_dynamic1_m5-T_inf_5)/(T0_TYPE5-T_inf_5));
+dynamic_mes_lnfunc6 = log((temp_dynamic1_m6-T_inf_6)/(T0_TYPE6-T_inf_6));
+dynamic_mes_lnfunc7 = log((temp_dynamic1_m7-T_inf_7)/(T0_TYPE7-T_inf_7));
+dynamic_mes_lnfuncRTD = log((temp_dynamic_mRTD-T_inf_RTD)/(T0_RTD-T_inf_RTD));
+
+figure(19);
+hold on;
+grid on;
+title('הקשר המתואר במשוואה *** עבור הצמד התרמי עם הצומת הקטנה');
+xlabel('Time [s]');
+ylabel('ln((T0-Tinf)/(T0-Tinf))');
+plot(time,dynamic_mes_lnfunc5');
+hold off;
+
+figure(20);
+hold on;
+grid on;
+title('הקשר המתואר במשוואה *** עבור הצמד התרמי עם הצומת הבינונית')
+xlabel('Time [s]');
+ylabel('ln((T0-Tinf)/(T0-Tinf))');
+plot(time,dynamic_mes_lnfunc6');
+hold off;
+
+figure(21);
+hold on;
+grid on;
+title('הקשר המתואר במשוואה *** עבור הצמד התרמי עם הצומת הגדולה');
+xlabel('Time [s]');
+ylabel('ln((T0-Tinf)/(T0-Tinf))');
+plot(time,dynamic_mes_lnfunc7');
+hold off;
+
+figure(22);
+hold on;
+grid on;
+title('RTD');
+xlabel('Time [s]');
+ylabel('ln((T0-Tinf)/(T0-Tinf))');
+plot(time,-abs(dynamic_mes_lnfuncRTD'));
+hold off;
+
+time_coeff5 = -time./dynamic_mes_lnfunc5';
+AVG_time_coeff5 = mean(time_coeff5(2:1:3000));
+time_coeff6 = -time./dynamic_mes_lnfunc6';
+AVG_time_coeff6 = mean(time_coeff6(2:1:3000));
+time_coeff7 = -time./dynamic_mes_lnfunc7';
+AVG_time_coeff7 = mean(time_coeff7(2:1:3000));
+time_coeffRTD = -time./-abs(dynamic_mes_lnfuncRTD');
+AVG_time_coeffRTD = mean(time_coeffRTD(2:1:3000)); %לפי האקסל זה 69.77 יש פה בעיה בחישוב לא יודעת מה
+
